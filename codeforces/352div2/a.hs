@@ -1,0 +1,1 @@
+main=readLn>>=putChar.(([0..]>>=show)!!)
