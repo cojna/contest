@@ -1,0 +1,1 @@
+main=readLn>>=print.(+7).(10^)
