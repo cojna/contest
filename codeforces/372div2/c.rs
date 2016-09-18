@@ -6,7 +6,7 @@ fn main(){
     let n = readln();
 
     let mut k: i64 = 1;
-    let mut x: i6 = 2;
+    let mut x: i64 = 2;
 
     for _ in 0..n {
         println!("{}", k * (k + 1) * (k + 1) - x / k);
