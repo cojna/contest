@@ -1,0 +1,1 @@
+main=getLine>>=print.length.filter id.zipWith(/=)"CODEFESTIVAL2016"
