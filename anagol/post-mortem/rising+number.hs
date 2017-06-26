@@ -1,0 +1,1 @@
+main=mapM print[x|x<-[10..6^5],and$zipWith(<)<*>tail$show x]
