@@ -1,0 +1,1 @@
+for(n<-1 to 8;a<-1 to 8;d<-1 to 7 if a+d*n<=9)println((a/:1.to(n))(10*_+a+d*_))
