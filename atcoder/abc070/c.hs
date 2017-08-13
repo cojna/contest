@@ -1,0 +1,1 @@
+main=getContents>>=print.foldl1 lcm.tail.map read.words
