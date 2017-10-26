@@ -1,0 +1,1 @@
+main=getLine>>=print.sum.zipWith(*)[1728,144,12,1].map read.words
