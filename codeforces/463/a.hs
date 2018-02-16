@@ -1,0 +1,1 @@
+main=do s<-getLine;putStrLn$s++reverse s
