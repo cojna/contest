@@ -51,29 +51,30 @@ eps :: Double
 eps = 1e-8
 
 solve :: Int -> [(Int, Int)] -> Double
-solve p_ whs = search p 0.0 allRanges
+solve p_ whs = fromIntegral offset + search p 0.0 allRanges
   where
     p :: Double
-    !p = fromIntegral p_
-    mkRange :: (Int, Int) -> Range
+    !p = fromIntegral $ p_ - offset
+    !offset = sum $ map ((*2).uncurry(+)) whs
     mkRange (x, y) = R l r
       where
-        l = fromIntegral $ 2 * (x + y) + 2 * x
-        r = fromIntegral (2 * (x + y)) + 2 * sqrt ((fromIntegral x)^2 + (fromIntegral y)^2)
+        l = fromIntegral $ 2 * x
+        r = 2.0 * sqrt (fromIntegral x^2 + fromIntegral y^2)
     allRanges = go [] $ map mkRange whs
-    go set (r:rs) = go (L.insert r $ map (addRange r) set) rs
+    go set (r:rs) = go (L.insert r $ concatMap (addRange r) set) rs
     go set []     = set
     search !best !res (R l r:rest)
       | l <= p, p <= r = p
-      | abs(l-p) < best `min` abs(r-p) = search (abs(l-p)) l rest
-      | abs(r-p) < best `min` abs(l-p) = search (abs(r-p)) r rest
+      | r <= p, p - r < best = search (p - r) r rest
       | otherwise = search best res rest
     search _ res [] = res
 
 data Range = R !Double !Double deriving (Eq, Ord, Show)
 
-addRange :: Range -> Range -> Range
-addRange (R _ rk) (R lx rx) = R lx (rx + rk)
+addRange :: Range -> Range -> [Range]
+addRange (R lk rk) (R lx rx)
+    | lk + lx <= rx = [R lx (rx + rk)]
+    | otherwise = [R lx rx, R (lx + lk) (rx + rk)]
 
 -------------------------------------------------------------------------------
 

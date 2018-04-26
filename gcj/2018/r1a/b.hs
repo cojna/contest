@@ -47,17 +47,13 @@ main = runGCJ $ do
     print $ solve r b msps
 
 solve :: Int -> Int -> [(Int, Int, Int)] -> Int
-solve r b msps = lowerBound 0 (upperBound r b msps) $ canFinish r b msps
-
-upperBound :: Int -> Int -> [(Int, Int, Int)] -> Int
-upperBound r b msps = sum.map(\(m,p,s)->s*m+p).take r $ L.sortBy (flip compare) msps
+solve r b msps = lowerBound 0 0x3f3f3f3f3f3f3f3f $ canFinish r b msps
 
 canFinish :: Int -> Int -> [(Int, Int, Int)] -> Int -> Bool
 canFinish r b msps t = sum cap >= b
   where
     cap = take r . L.sortBy (flip compare) . filter(>0) $ map limit msps
     limit (m, s, p) = min m $ max 0 (t - p) `quot` s
-
 
 lowerBound :: (Integral i) => i -> i -> (i -> Bool) -> i
 lowerBound low high p = assert (low >= 0 && p high) $ go low high
