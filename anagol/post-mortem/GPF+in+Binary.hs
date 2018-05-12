@@ -1,0 +1,1 @@
+main=interact$(words"- --- -_- -_---"!!).length
