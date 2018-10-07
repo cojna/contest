@@ -1,0 +1,1 @@
+main=interact$f.sum.map read.words;f 1="Hello World";f x=show$x-2
