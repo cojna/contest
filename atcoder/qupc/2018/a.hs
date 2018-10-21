@@ -1,0 +1,1 @@
+main=readLn>>=print.(2010+).(4*)
