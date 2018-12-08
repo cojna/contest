@@ -1,0 +1,1 @@
+main=interact(\s->"Christmas"++([s!!1..'4']>>" Eve"))
