@@ -1,0 +1,1 @@
+main=interact$show.foldr(gcd.read)0.tail.words
