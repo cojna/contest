@@ -1,0 +1,1 @@
+main=interact f;f(c:_)|elem c"357"="YES"|0<1="NO"
