@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f l|t<-[div(x+9)10*10-x|x<-l]=sum(l++t)-maximum t

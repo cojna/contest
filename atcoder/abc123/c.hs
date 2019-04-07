@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:l)|m<-minimum l=div(n+m-1)m+4
