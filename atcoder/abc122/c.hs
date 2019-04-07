@@ -3,6 +3,7 @@
 {-# LANGUAGE CPP                   #-}
 {-# LANGUAGE MagicHash             #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE MultiWayIf            #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE TupleSections         #-}
 {-# LANGUAGE TypeFamilies          #-}
@@ -15,7 +16,10 @@ import           Control.Monad.ST
 import           Control.Monad.State.Strict
 import           Data.Bool
 import qualified Data.ByteString             as B
+import qualified Data.ByteString.Builder     as B
+import qualified Data.ByteString.Builder.Extra as B
 import qualified Data.ByteString.Char8       as C
+import qualified Data.ByteString.Lazy        as BL
 import qualified Data.ByteString.Unsafe      as B
 import           Data.Char
 import qualified Data.Foldable               as F
@@ -37,28 +41,38 @@ import qualified Data.Vector.Unboxed.Mutable as UM
 import           Debug.Trace
 import           Foreign                     hiding (void)
 import           GHC.Exts
+import qualified System.IO                   as IO
 import           Unsafe.Coerce
 
 main :: IO ()
 main = do
     [n, q] <- map read.words <$> getLine :: IO [Int]
-    cs <- U.unfoldrN n C.uncons <$> C.getLine
+    cs <- B.getLine
     lrs <- U.unfoldrN q parseInt2 <$> C.getContents
-    putStr.unlines.map show.U.toList $ solve n cs lrs
+    putNonBlocking
+        . B.toLazyByteStringWith (B.safeStrategy smallChunkSize chunkSize) mempty
+        . U.foldr (\x b -> B.intDec x <> B.char7 '\n' <> b) mempty
+        $ solve n cs lrs
 
-solve :: Int -> U.Vector Char -> U.Vector (Int, Int) -> U.Vector Int
+solve :: Int -> B.ByteString -> U.Vector (Int, Int) -> U.Vector Int
 solve n cs lrs = U.map (uncurry query) lrs
   where
-    go ('A':'C':s) = 0:1:go s
-    go (c:s) = 0:go s
-    go [] = []
-
     table :: U.Vector Int
-    !table = U.scanl' (+) 0 . U.fromListN n . go $ U.toList cs
+    !table = U.scanl' (+) 0 . U.generate n $ \i ->
+        if  | i > 0 -> fromEnum $ B.unsafeIndex cs (i - 1) == 65 && B.unsafeIndex cs i == 67
+            | otherwise -> 0
     {-# NOINLINE table #-}
 
-    query l r = table U.! r - table U.! l
+    query l r = U.unsafeIndex table r - U.unsafeIndex table l
 
+putNonBlocking :: BL.ByteString -> IO ()
+putNonBlocking = BL.foldrChunks ((>>).B.hPutNonBlocking IO.stdout) (return ())
+
+smallChunkSize :: Int
+smallChunkSize = 32 * 1024 - 2 * sizeOf (undefined :: Int)
+
+chunkSize :: Int
+chunkSize = 256 * 1024 - 2 * sizeOf (undefined :: Int)
 
 -------------------------------------------------------------------------------
 type Parser a = C.ByteString -> Maybe (a, C.ByteString)
