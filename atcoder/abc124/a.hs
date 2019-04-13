@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[x,y]=max(x+y)$2*max x y-1

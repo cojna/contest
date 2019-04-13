@@ -1,0 +1,1 @@
+f(_:l)=sum[x^0|(x,y)<-zip l$scanl1 max l,x>=y];main=interact$show.f.map read.words
