@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f(n:m:x:y:l)|and[a<b|a<-x:take n l,b<-y:drop n l]="No War"|0<1="War"

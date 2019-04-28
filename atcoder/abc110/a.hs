@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f l=sum l+9*maximum l
