@@ -1,0 +1,1 @@
+main=interact$f.lines;f(_:l)|[s|s<-l,t<-l,s==t]==l,and.zipWith((==).last)l.tail$map(!!0)l="Yes"|0<1="No"

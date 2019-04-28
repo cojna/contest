@@ -1,0 +1,1 @@
+main=interact(\s->last$"Yes":["No"|'2'<-s])
