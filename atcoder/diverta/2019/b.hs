@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[r,g,b,n]=sum[1|x<-[0,r..n],y<-[0,g..n-x],0<-[rem(n-x-y)b]]
