@@ -1,0 +1,1 @@
+main=interact$f.words;f[_,k,s]=[[c..]!!sum[32|i==read k]|(i,c)<-zip[1..]s]

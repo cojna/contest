@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,k]=sum[[0.5^j|j<-[0..],i*2^j>=k]!!0|i<-[1..n]]/n
