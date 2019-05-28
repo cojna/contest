@@ -1,0 +1,1 @@
+main=interact$show.f(8^6)0.drop 2.map read.words;f r l(x:y:z)=f(min r y)(max l x)z;f r l[]=max 0$r-l+1

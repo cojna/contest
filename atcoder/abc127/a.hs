@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[a,b]|a<6=0|a>12=b|0<1=div b 2

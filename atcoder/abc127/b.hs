@@ -1,0 +1,1 @@
+main=getLine>>=mapM print.f.map read.words;f[r,d,x]=tail.scanl((-).(*r))x$d<$[0..9]
