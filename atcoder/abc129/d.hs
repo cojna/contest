@@ -53,26 +53,27 @@ main = do
     print $ solve h (w+1) mat
 
 solve :: Int -> Int -> U.Vector Word8 -> Int
-solve h w mat = subtract 1 . U.maximum $ U.zipWith (+) lr ud
+solve h w mat = subtract 1 . V.maximum . V.map U.maximum $ V.zipWith (U.zipWith (+)) lr ud
   where
-    trans :: U.Vector Int -> U.Vector Int
-    trans m = U.unsafeBackpermute m $ U.generate (h * w) $ \ij ->
-        let (i, j) = quotRem ij w
-        in j * h + i
+    forward :: Int -> Int -> Int
+    forward acc x
+        | x == 0 = 0
+        | otherwise = max acc x
 
-    lr :: U.Vector Int
-    lr = U.concatMap (\i ->
-          U.scanl1' (\acc x -> if x == 0 then 0 else max acc x)
-            . U.postscanr' (\c acc -> if c /= B.c2w '.' then 0 else acc + 1) 0
+    backward :: Word8 -> Int -> Int
+    backward x acc
+        | x /= B.c2w '.' = 0
+        | otherwise = acc + 1
+
+    lr :: V.Vector (U.Vector Int)
+    lr  = V.generate h $ \i ->
+          U.scanl1' forward
+            . U.postscanr' backward 0
             $ U.unsafeSlice (i * w) w mat
-        )
-        $ U.generate h id
 
-    ud :: U.Vector Int
-    ud = trans
-        . U.concatMap (\j ->
-            U.scanl1' (\acc x -> if x == 0 then 0 else max acc x)
-              . U.postscanr' (\c acc -> if c /= B.c2w '.' then 0 else acc + 1) 0
-              $ U.map (U.unsafeIndex mat) $ U.iterateN h (+w) j
-        )
-        $ U.generate w id
+    ud :: V.Vector (U.Vector Int)
+    ud = V.scanl1' (U.zipWith forward)
+        . V.postscanr' (U.zipWith backward) (U.replicate w 0)
+        $ V.generate h (\i -> U.unsafeSlice (i * w) w mat)
+
+
