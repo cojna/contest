@@ -1,0 +1,1 @@
+main=interact f;f l|or.zipWith(==)l$tail l="Bad"|0<1="Good"

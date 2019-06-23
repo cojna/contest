@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[a,b,c,d]=b-a-g c-g d+g(lcm c d)where g x=div b x-div(a+x-1)x
