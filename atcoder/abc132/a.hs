@@ -1,0 +1,1 @@
+main=interact f;f s|[1|k<-['A'..],[1|c<-s,c==k]>[1]]>[1]="Yes"|0<1="No"

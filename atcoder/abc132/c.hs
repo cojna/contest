@@ -1,0 +1,1 @@
+import Data.List;main=interact$show.f.map read.words;f(n:l)|x<-div n 2,s<-sort l=s!!x-s!!(x-1)
