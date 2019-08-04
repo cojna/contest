@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,d]=div(n+2*d)$2*d+1
