@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[l,r]|r-l>672=0|0<1=minimum[rem(i*j)2019|i<-[l..r],j<-[i+1..r]]

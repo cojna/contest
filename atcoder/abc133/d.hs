@@ -1,0 +1,1 @@
+main=interact$unwords.init.f.map read.words;f(_:l)=show<$>scanr((-).(*2))(sum.zipWith(*)l$cycle[1,-1])l
