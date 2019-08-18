@@ -1,0 +1,1 @@
+main=interact$unwords.f.map read.words;f[k,x]=show<$>[x-k+1..x+k-1]
