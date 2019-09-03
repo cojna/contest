@@ -1,0 +1,1 @@
+main=interact$show.f.lines;f[s,t]=sum[1|(x,y)<-zip s t,x==y]

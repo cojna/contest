@@ -1,0 +1,1 @@
+import Data.List;main=interact$show.f.map read.words;f(n:l)=foldl max 0.map(\g->sum[n^0|x<-g,x]).group.zipWith(>=)l$tail l
