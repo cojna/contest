@@ -1,0 +1,1 @@
+main=interact$f.take 1;f"S"="Cloudy";f"C"="Rainy";f _="Sunny"

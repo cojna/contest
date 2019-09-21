@@ -1,0 +1,1 @@
+import Data.List;main=interact$f.map read.words;f(n:k:q:l)=(>>=g.drop(q-k+1)).group.sort$[1..n]++l;g[]="No\n";g _="Yes\n"
