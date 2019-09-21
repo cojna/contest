@@ -1,0 +1,1 @@
+main=interact$show.f.words;f[n,k,s]=read n-max(g s-2*read k)1;g(x:y:l)=sum[1|x/=y]+g(y:l);g _=1

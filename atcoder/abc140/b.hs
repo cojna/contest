@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:l)=sum[l!!(n+i-1)|i<-n%take n l];n%(x:y:l)=x:[n+x|x+1==y]++n%(y:l);n%l=l
