@@ -1,0 +1,1 @@
+main=interact$unlines.map r.r.lines;r=reverse
