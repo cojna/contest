@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:k:l)=sum[h^0|h<-l,h>=k]
