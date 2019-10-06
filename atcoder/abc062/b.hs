@@ -1,0 +1,1 @@
+main=interact$f.lines;f(_:l)|t<-'#'<$l!!0=do s<-scanr(zipWith const)t$t:l;'#':s++"#\n"
