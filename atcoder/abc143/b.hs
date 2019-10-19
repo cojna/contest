@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:l)=div(sum[x*y|x<-l,y<-l]-sum[x*x|x<-l])2
