@@ -1,0 +1,1 @@
+main=interact$show.sum.map(([0,0,1,0,1,2,3,0,1,0]!!).read).tail.words
