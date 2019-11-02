@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f(n:_:l)=do i<-[1..n];let{a#(l:r:t:x)|i<l||r<i=a#x|0<1=t#x;a#_=a};shows(0#l)"\n";

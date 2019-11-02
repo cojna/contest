@@ -1,0 +1,1 @@
+main=getLine>>=print.f.map read.words;f[a,b,c]=div c$min a b
