@@ -1,0 +1,1 @@
+main=getLine>>=print.f.map read.words;f[x,y,z]=div(x-z)$y+z

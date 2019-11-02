@@ -1,0 +1,1 @@
+main=getLine>>=putStrLn.f;f[x,_,y]|x<y="<"|x>y=">"|0<1="="
