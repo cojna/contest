@@ -1,0 +1,1 @@
+main=do k<-readLn;print$div k 2*div(k+1)2

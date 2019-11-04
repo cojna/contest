@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,k]=div n k^3+sum[1|x<-[1..n],rem x k*2==k]^3
