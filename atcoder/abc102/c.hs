@@ -1,0 +1,1 @@
+import Data.List;main=interact$show.f.zipWith(-)[0..].map read.words;f(n:l)|b<-sort l!!div(-n)2=sum[abs$x-b|x<-l]
