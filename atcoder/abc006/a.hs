@@ -1,0 +1,1 @@
+main=readLn>>=putStrLn.(cycle(words"YES NO NO")!!)
