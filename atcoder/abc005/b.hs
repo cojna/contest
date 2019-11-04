@@ -1,0 +1,1 @@
+main=getContents>>=print.(+0).minimum.tail.map read.words
