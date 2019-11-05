@@ -1,0 +1,1 @@
+main=getLine>>=putStr.f;f s|read s`mod`sum[read[c]|c<-s]<1="Yes"|0<1="No"

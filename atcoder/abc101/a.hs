@@ -1,0 +1,1 @@
+main=do s<-getLine;print$sum[2|'+'<-s]-4
