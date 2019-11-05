@@ -1,0 +1,1 @@
+main=getLine>>=print.s.map read.words;s[a,b,c,d,e,f]=0.5*abs((c-a)*(f-b)-(e-a)*(d-b))
