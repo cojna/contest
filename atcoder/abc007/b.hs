@@ -1,0 +1,1 @@
+main=getLine>>=putStrLn.f;f"a"="-1";f _="a"
