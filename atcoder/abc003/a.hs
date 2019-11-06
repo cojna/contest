@@ -1,0 +1,1 @@
+main=readLn>>=print.(*5e3).(+1)
