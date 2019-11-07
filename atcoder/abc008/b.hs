@@ -1,0 +1,1 @@
+import Data.List;main=interact$snd.maximum.map(\(x:l)->(' '<$l,x++"\n")).group.sort.tail.lines

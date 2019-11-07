@@ -1,0 +1,1 @@
+main=getLine>>=print.foldr((-).read)0.("1":).words
