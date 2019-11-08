@@ -1,0 +1,1 @@
+l=[1..9];main=do n<-readLn;putStr$do x<-l;y<-l;2025<-[n+x*y];shows x" x "++shows y"\n"

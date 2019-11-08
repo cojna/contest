@@ -1,0 +1,1 @@
+main=do x<-readLn;putStrLn.init$do t<-[div x 3600,mod(div x 60)60,mod x 60];tail$shows(t+100)":"
