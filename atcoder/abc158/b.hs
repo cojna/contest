@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,a,b]=a*div n(a+b)+mod n(a+b)`min`a
