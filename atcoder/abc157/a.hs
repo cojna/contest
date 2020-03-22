@@ -1,0 +1,1 @@
+main=do x<-readLn;print$div(x+1)2

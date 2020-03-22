@@ -1,0 +1,1 @@
+main=interact$f.words;f l|or[and[[elem x$drop 10l|x<-take 9l]!!read[c]|c<-s]|s<-words"012 345 678 036 147 258 048 246"]="Yes"|0<1="No"

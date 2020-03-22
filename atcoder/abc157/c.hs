@@ -1,0 +1,1 @@
+main=interact$head.f.map read.words;f(n:m:l)=mapM(\s->[c|c<-[0^(s-div n 2)..9],and[l!!i==c|i<-[1,3..2*m],l!!(i-1)==s]]>>=show)[1..n]++["-1"]
