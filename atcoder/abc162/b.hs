@@ -1,0 +1,1 @@
+main=do x<-readLn;print$sum[i|i<-[1..x],gcd i 15<2]

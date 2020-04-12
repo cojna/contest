@@ -1,0 +1,1 @@
+main=do n<-readLn;print.sum$foldl1 gcd<$>mapM(\_->[1..n])"XXX"

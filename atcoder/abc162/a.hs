@@ -1,0 +1,1 @@
+main=interact f;f s|elem '7's="Yes"|0<1="No"
