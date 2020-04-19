@@ -1,8 +1,9 @@
 {-# OPTIONS_GHC -O2 #-}
-{-# LANGUAGE BangPatterns, CPP, FlexibleContexts, FlexibleInstances         #-}
-{-# LANGUAGE KindSignatures, LambdaCase, MagicHash, MultiParamTypeClasses   #-}
-{-# LANGUAGE MultiWayIf, OverloadedStrings, RecordWildCards                 #-}
-{-# LANGUAGE ScopedTypeVariables, TupleSections, TypeFamilies, ViewPatterns #-}
+{-# LANGUAGE BangPatterns, BinaryLiterals, CPP, FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances, KindSignatures, LambdaCase, MagicHash #-}
+{-# LANGUAGE MultiParamTypeClasses, MultiWayIf, OverloadedStrings     #-}
+{-# LANGUAGE RecordWildCards, ScopedTypeVariables, TupleSections      #-}
+{-# LANGUAGE TypeApplications, TypeFamilies, ViewPatterns             #-}
 
 import           Control.Applicative
 import           Control.Exception
@@ -26,6 +27,7 @@ import qualified Data.List                   as L
 import qualified Data.Map.Strict             as M
 import           Data.Monoid
 import           Data.Ord
+import           Data.Primitive
 import           Data.Primitive.MutVar
 import           Data.Ratio
 import qualified Data.Set                    as S
@@ -42,29 +44,133 @@ import           GHC.Exts
 import qualified System.IO                   as IO
 import           Unsafe.Coerce
 
+#define MOD 1000000007
+
 main :: IO ()
 main = do
     [n, k] <- map read.words <$> getLine :: IO [Int]
     print $ solve n k
 
-#define MOD 1000000007
-
 solve :: Int -> Int -> IntMod
-solve n k
-    = (IntMod k) ^ n - sum [table U.! i| i<-[2..k]]
-    + sum[IntMod i * table U.! i | i<-[2..k]]
+solve n k = withPrimes k $ \primes ->
+    let !fs = U.generate (k + 1) $ \i ->
+            if i > 0
+            then IntMod (quot k i) ^ n
+            else IntMod k ^ n
+    in U.sum . U.imap (\i g -> IntMod i * g)
+        $ U.modify (fastMoebius DivOrd primes) fs
+
+infix 4 .<.
+class Poset a where
+    (.<.) :: a -> a -> Bool
+    zeta :: (Integral i) => a -> a -> i
+    zeta x y
+        | x .<. y = 1
+        | otherwise = 0
+    moebius :: (Integral i) => a -> a -> i
+
+class Lattice a where
+    (/\) :: a -> a -> a
+    (\/) :: a -> a -> a
+
+class FastZetaMoebius f where
+    type Dim f
+    fastZeta
+        :: (Num a, U.Unbox a, PrimMonad m)
+        => (Int -> f Int) -> Dim f -> UM.MVector (PrimState m) a -> m ()
+    fastMoebius
+        :: (Num a, U.Unbox a, PrimMonad m)
+        => (Int -> f Int) -> Dim f -> UM.MVector (PrimState m) a -> m ()
+
+newtype DivOrd a = DivOrd {getDivOrd :: a}
+    deriving (Eq, Show)
+
+instance (Integral a) => Poset (DivOrd a) where
+    (.<.)  (DivOrd x) (DivOrd y) = rem y x == 0
+    moebius (DivOrd x) (DivOrd y)
+        | not $ DivOrd x .<. DivOrd y = 0
+        | otherwise
+            = product . map mu . L.group
+            $ primeFactors (quot y x)
+      where
+        mu [_] = -1
+        mu _ = 0
+
+instance (Integral a) => Lattice (DivOrd a) where
+    (/\) = coerce (gcd @a)
+    (\/) = coerce (lcm @a)
+
+instance FastZetaMoebius DivOrd where
+    type Dim DivOrd = U.Vector Int
+    fastZeta _ primes g = do
+        let n = UM.length g
+        when (n > 0) $ do
+            g0 <- UM.read g 0
+            U.forM_ primes $ \p ->
+                rev (quot (n - 1) p + 1) $ \i -> do
+                    c <- UM.unsafeRead g (p * i)
+                    UM.unsafeModify g (+ c) i
+            UM.write g 0 g0
+    {-# INLINE fastZeta #-}
+
+    fastMoebius _ primes f = do
+        let n = UM.length f
+        when (n > 0) $ do
+            f0 <- UM.read f 0
+            U.forM_ primes $ \p ->
+                rep (quot (n - 1) p + 1) $ \i -> do
+                    c <- UM.unsafeRead f (p * i)
+                    UM.unsafeModify f (subtract c) i
+            UM.write f 0 f0
+    {-# INLINE fastMoebius #-}
+
+smallPrimes :: (Integral i) => [i]
+smallPrimes = 2 : [ n | n<-[3,5..46337], all ((>0).rem n) $ takeWhile (\x->x*x<=n) smallPrimes]
+{-# SPECIALIZE smallPrimes :: [Int] #-}
+
+primeFactors :: (Integral i) => i -> [i]
+primeFactors n | n < 2 = []
+primeFactors n = go n smallPrimes
   where
-    !table = U.create $ do
-        dp <- UM.replicate (k + 1) 0
-        rep (k + 1) $ \i -> do
-            when (i > 0) $ do
-                UM.unsafeWrite dp i $ (IntMod $ quot k i) ^ n
-        rev (k + 1) $ \i -> do
-          when (i > 1) $ do
-            forM_ [2*i, 3*i..k] $ \j -> do
-                t <- UM.unsafeRead dp j
-                UM.unsafeModify dp  (subtract t) i
-        return dp
+    go !n pps@(p:ps)
+        | n < p * p = [n]
+        | r > 0     = go n ps
+        | otherwise = p : go q pps
+      where
+        (q, r) = quotRem n p
+    go n [] = [n]
+{-# SPECIALIZE primeFactors :: Int -> [Int] #-}
+
+withPrimes :: Int -> (U.Vector Int -> a) -> a
+withPrimes n f = f . U.filter isP $ U.generate (n + 1) id
+  where
+    !(Sieve sieved) = sieve n
+    isP i =
+        let seg = indexByteArray @Word64 sieved (unsafeShiftR i 6)
+        in testBit seg (i .&. 0x3f)
+
+newtype Sieve = Sieve ByteArray
+
+sieve :: Int -> Sieve
+sieve n = runST $ do
+    let lim = ((n + 1) + 63) `quot` 64 * 64
+    isp <- newByteArray (lim * 8)
+    fillByteArray isp 0 (lim * 8) 0b10101010
+    seg0 <- readByteArray @Word64 isp 0
+    writeByteArray @Word8 isp 0 $ 0b10101100
+    let !sqrtLim = floor . sqrt $ fromIntegral lim
+    flip fix 3 $ \loop !p -> do
+        seg <- readByteArray @Word64 isp (unsafeShiftR p 6)
+        when (testBit seg (p .&. 0x3f)) $ do
+            flip fix (p * p) $ \loop' !i -> do
+                when (i < lim) $ do
+                    seg' <- readByteArray @Word64 isp (unsafeShiftR i 6)
+                    writeByteArray @Word64 isp (unsafeShiftR i 6)
+                        $ clearBit seg' (i .&. 0x3f)
+                    loop' (i + 2 * p)
+        when (p + 2 <= sqrtLim) $ do
+            loop (p + 2)
+    Sieve <$> unsafeFreezeByteArray isp
 
 -------------------------------------------------------------------------------
 -- Utils
