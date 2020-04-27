@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[s,w]|w<s="safe"|0<s="unsafe"
