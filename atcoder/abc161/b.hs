@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f(n:m:l)|sum[1|x<-l,4*m*x>=sum l]<m="No"|0<1="Yes"
