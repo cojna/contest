@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:k:ls)=[1..n]%ls;r%(d:l)|(x,y)<-splitAt d l=filter(`notElem`x)r%y;r%l=length r

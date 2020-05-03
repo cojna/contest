@@ -1,0 +1,1 @@
+main=getLine>>=putStr.f;f"ABC"="ARC";f _="ABC"
