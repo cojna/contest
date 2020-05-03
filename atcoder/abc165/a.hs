@@ -1,0 +1,1 @@
+main=interact$last.f.map read.words;f[k,a,b]="NG":["OK"|x<-[a..b],rem x k<1]
