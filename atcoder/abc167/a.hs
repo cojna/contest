@@ -1,0 +1,1 @@
+main=interact$f.lines;f[s,t]|s==init t="Yes"|0<1="No"

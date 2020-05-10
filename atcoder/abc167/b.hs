@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[a,b,c,k]=min a k-(k-min(a+b)k)
