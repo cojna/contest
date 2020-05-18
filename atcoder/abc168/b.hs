@@ -1,0 +1,1 @@
+main=interact$f.lines;f[k,s]|t<-take(read k)s,t<s=t++"..."|0<1=s

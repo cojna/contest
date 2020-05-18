@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[a,b,h,m]|x<-pi/6*(h+m/60),y<-pi/30*m=sqrt$(a*cos x-b*cos y)^2+(a*sin x-b*sin y)^2
