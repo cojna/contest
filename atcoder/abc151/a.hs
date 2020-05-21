@@ -1,0 +1,1 @@
+main=getChar>>=putChar.succ

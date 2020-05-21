@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:k:m:l)|r<-n*m-sum l,r<=k=max 0r|0<1=0-1
