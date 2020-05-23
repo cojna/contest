@@ -1,0 +1,1 @@
+main=interact$show.f.map(map read.words).lines;f([n]:l)=sum[sqrt$(a-c)^2+(b-d)^2|[a,b]<-l,[c,d]<-l]/n
