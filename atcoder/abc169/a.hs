@@ -1,0 +1,1 @@
+main=interact$show.product.map read.words

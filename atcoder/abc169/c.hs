@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words.filter(/= '.');f[a,b]=div(a*b)100
