@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,m]=sum[1..n+m-1]-n*m

@@ -1,0 +1,1 @@
+main=getLine>>=putStr.f;f s|p s,p$take(div(sum$1<$s)2)s="Yes"|0<1="No";p s=s==reverse s
