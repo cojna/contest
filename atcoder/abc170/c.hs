@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(x:n:p)=snd$minimum[(abs(i-x),i)|i<-[-101..101],notElem i p]
