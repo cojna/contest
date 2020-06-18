@@ -1,0 +1,1 @@
+main=do x<-readLn;print$x-mod x 5+500*div x 500

@@ -1,0 +1,1 @@
+main=interact f;f l|l!!2==l!!3,l!!4==l!!5="Yes"|0<1="No"
