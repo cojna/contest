@@ -1,0 +1,1 @@
+main=interact$f.foldr((-).read)0.words;f x=shows(minimum[abs x,10-x,10+x])"\n"

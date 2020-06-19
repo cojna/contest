@@ -1,0 +1,1 @@
+main=do c<-getChar;print$length['A'..c]
