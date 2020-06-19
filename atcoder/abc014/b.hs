@@ -1,0 +1,1 @@
+import Data.Bits;main=interact$f.map read.words;f(n:x:l)=shows(sum[l|(i,l)<-zip[0..n]l,testBit x i])"\n"
