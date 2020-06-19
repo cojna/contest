@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f(_:l)|n<-sum$min 1<$>l=shows(div(sum l+n-1)n)"\n"

@@ -1,0 +1,1 @@
+import Data.Bits;main=interact$f.lines;f(_:l)|elem 0$foldl xor(0::Int)<$>mapM(map read.words)l="Found\n"|0<1="Nothing\n"

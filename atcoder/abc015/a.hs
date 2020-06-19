@@ -1,0 +1,1 @@
+main=interact$f.words;f[a,b]|(a<$a)<(a<$b)=b|0<1=a
