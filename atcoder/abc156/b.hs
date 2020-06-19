@@ -1,0 +1,1 @@
+import Numeric;main=interact$show.f.map read.words;f[n,k]=length$showIntAtBase k toEnum n""
