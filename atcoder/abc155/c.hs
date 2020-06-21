@@ -1,0 +1,1 @@
+import Data.List;main=interact$unlines.map head.last.groupBy(\x y->length x==length y).sortOn length.group.sort.tail.lines
