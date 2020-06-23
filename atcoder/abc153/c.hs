@@ -1,0 +1,1 @@
+import Data.List;main=interact$show.f.map read.words;f(n:k:l)=sum.take(n-k)$sort l
