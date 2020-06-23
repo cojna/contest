@@ -1,0 +1,1 @@
+import Data.Set;main=interact$f.words;f(n:l)|size(fromList l)<read n="NO"|0<1="YES"

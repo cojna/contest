@@ -1,0 +1,1 @@
+main=interact$f.words;f[s,t,a,b,u]|s==u=g a++' ':b|0<1=a++' ':g b;g s=show$read s-1

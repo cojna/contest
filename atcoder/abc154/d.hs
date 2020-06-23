@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:k:l)|(x,y)<-splitAt k l=0.5*fromIntegral(k+maximum(scanl(+)(sum x)$zipWith(-)y l))
