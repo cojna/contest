@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:l)=sum$(n+1)#l;m#(x:l)|m>x=1:x#l|0<1=m#l;_#l=l

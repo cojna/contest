@@ -1,0 +1,1 @@
+main=interact$f.words;f[n,m]|n==m="Yes"|0<1="No"
