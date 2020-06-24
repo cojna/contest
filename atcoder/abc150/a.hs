@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[k,x]|500*k<x="No"|0<1="Yes"

@@ -1,0 +1,1 @@
+main=interact$show.f.last.lines;f('A':'B':'C':s)=1+f s;f(_:s)=f s;f[]=0
