@@ -1,0 +1,1 @@
+main=interact$f.words;f[s,t]=t++s

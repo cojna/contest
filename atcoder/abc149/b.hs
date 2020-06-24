@@ -1,0 +1,1 @@
+main=interact$unwords.map show.f.map read.words;f[a,b,k]|k>a=[0,max(a+b-k)0]|0<1=[a-k,b]
