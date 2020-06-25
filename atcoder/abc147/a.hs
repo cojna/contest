@@ -1,0 +1,1 @@
+main=interact$f.sum.map read.words;f x|x<22="win"|0<1="bust"

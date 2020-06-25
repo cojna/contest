@@ -1,0 +1,1 @@
+main=getLine>>=print.f;f s=sum[1|(x,y)<-zip s$reverse s,x<y]
