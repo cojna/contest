@@ -1,0 +1,1 @@
+main=interact$f.lines;f[a,s]|read a<3200="red"|0<1=s
