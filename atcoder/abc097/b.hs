@@ -1,0 +1,1 @@
+main=do x<-readLn;print$maximum[b^p|b<-[1..x],p<-[2..9],b^p<=x]

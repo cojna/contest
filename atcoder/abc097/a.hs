@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[a,b,c,d]|abs(a-b)`max`abs(b-c)>d,abs(c-a)>d="No"|0<1="Yes"
