@@ -1,0 +1,1 @@
+main=interact$f.words;f[_,s,t]=s%t;(a:b)%(c:d)=a:c:b%d;l%_=l

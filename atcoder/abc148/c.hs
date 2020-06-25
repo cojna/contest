@@ -1,0 +1,1 @@
+main=interact$show.foldr(lcm.read)1.words
