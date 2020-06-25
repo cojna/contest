@@ -1,0 +1,1 @@
+main=interact$show.f;f s=maximum[sum[1|c<-['a'..'z'],elem c$take i s,elem c$drop i s]|i<-[1..999]]
