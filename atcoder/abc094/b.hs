@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:m:x:l)|(a,b)<-span(<x+0)l,n>0=sum$min(1<$a)$1<$b
