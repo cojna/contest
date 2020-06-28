@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f l|(q,r)<-divMod(3*maximum l-sum l)2=q+2*r

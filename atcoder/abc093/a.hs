@@ -1,0 +1,1 @@
+main=interact f;f s|and[elem c s|c<-"abc"]="Yes"|0<1="No"

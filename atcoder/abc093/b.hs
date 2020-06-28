@@ -1,0 +1,1 @@
+main=interact$unlines.map show.f.map read.words;f[a,b,k]|c<-min(a+k-1)b=[a..c]++[max(b-k+1)(c+1)..b]
