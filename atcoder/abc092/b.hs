@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:d:x:l)=sum$x:[div(d+i-1)i|i<-l]
