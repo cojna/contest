@@ -1,0 +1,1 @@
+main=interact(\s->unlines[unwords[w,"x",show$sum[1|x<-lines s,x==w]]|w<-words"AC WA TLE RE"])
