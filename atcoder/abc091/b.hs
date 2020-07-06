@@ -1,0 +1,1 @@
+import Data.List;main=do n<-readLn;interact$show.foldr(max.length)0.group.sort.uncurry(\\).splitAt n.lines
