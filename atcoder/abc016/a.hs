@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[m,d]|rem m d<1="YES\n"|0<1="NO\n"
