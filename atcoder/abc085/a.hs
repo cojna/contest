@@ -1,0 +1,1 @@
+main=interact$shows 2018.drop 4

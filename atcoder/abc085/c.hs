@@ -1,0 +1,1 @@
+main=interact$unwords.map show.f.map read.words;f[n,y]=last$[-1,-1,-1]:[[a,b,n-a-b]|a<-[0..n],b<-[0..n-a],1000*(9*a+4*b+n)==y]
