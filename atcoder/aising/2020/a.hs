@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[l,r,d]=sum[1|x<-[l..r],mod x d<1]
