@@ -1,0 +1,1 @@
+main=interact$g.map read.tail.words;g(c:s:f:l)=shows((s+c)#l)"\n"++g l;g _="0";t#(c:s:f:l)=(div(max t s+f-1)f*f+c)#l;t#_=t
