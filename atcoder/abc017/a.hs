@@ -1,0 +1,1 @@
+main=getContents>>=print.(`div`10).sum.map(product.map read.words).lines
