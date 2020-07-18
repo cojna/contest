@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f l=do x<-l;shows(sum[1|y<-l,x<y+1])"\n"

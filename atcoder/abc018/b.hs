@@ -1,0 +1,1 @@
+main=interact$f.words;f(s:_:q)=s#map read q;s#(l:r:q)=([s!!i|i<-[0..l-2]++[r-1,r-2..l-1]]++drop r s)#q;s#_=s++"\n"
