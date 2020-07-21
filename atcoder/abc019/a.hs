@@ -1,0 +1,1 @@
+main=interact(\s->[shows i"\n"|i<-[1..100],j<-read<$>words s,i==j]!!1)

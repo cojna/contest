@@ -1,0 +1,1 @@
+main=interact f;f[c]=[c];f(c:s)|(x,y)<-span(c==)s=c:shows(1+length x)(f y)
