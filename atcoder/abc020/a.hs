@@ -1,0 +1,1 @@
+main=interact f;f"1\n"="ABC\n";f _="chokudai\n"

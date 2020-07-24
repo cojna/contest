@@ -1,0 +1,1 @@
+main=getLine>>=print.(2*).read.concat.words
