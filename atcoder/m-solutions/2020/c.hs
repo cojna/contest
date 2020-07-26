@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f(n:k:l)=l`zip`drop k l>>=g;g(x,y)|x<y="Yes\n"|0<1="No\n"

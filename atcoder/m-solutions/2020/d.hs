@@ -1,0 +1,1 @@
+main=interact$show.(1000%).tail.map read.words;m%(x:y:l)|x<y,(q,r)<-divMod m x=(r+q*y)%(y:l)|0<1=m%(y:l);m%_ = m

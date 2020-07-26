@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[a,b,c,k]|a>=b=f[a,2*b,c,k-1]|b<c*2^max 0k="Yes"|0<1="No"

@@ -1,0 +1,1 @@
+main=do x<-readLn;print$10-div x 200
