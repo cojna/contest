@@ -1,0 +1,1 @@
+main=getContents>>=print.f.map read.words;f(_:l)=m[x+0|x<-l,x<m l];m=maximum
