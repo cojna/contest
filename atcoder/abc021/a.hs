@@ -1,0 +1,1 @@
+main=do x<-readLn;print x;putStr$[1..x]>>"1\n"

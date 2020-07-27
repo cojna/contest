@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f(n:a:b:k:l)|or[[1|j<-a:b:l,i==j]>[1]|i<-[1..n]]="NO\n"|0<1="YES\n"
