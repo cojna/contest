@@ -1,0 +1,1 @@
+import Data.List;main=interact$show.f.map read.words;f(n:k:l)=sum.drop k.reverse.sort.map length.group$sort l

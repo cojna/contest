@@ -1,0 +1,1 @@
+main=interact$show.f.map read.tail.words;f l|any odd l=0|0<1=1+f(map(`div`2)l)
