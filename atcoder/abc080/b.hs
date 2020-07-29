@@ -1,0 +1,1 @@
+main=readLn>>=putStr.f;f n|n`rem`sum[read[c]|c<-show n]<1="Yes"|0<1="No"
