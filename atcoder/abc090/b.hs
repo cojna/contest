@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[a,b]=sum[1|s<-show<$>[a+0..b],s==reverse s]
