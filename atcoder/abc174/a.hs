@@ -1,0 +1,1 @@
+main=readLn>>=putStr.f;f x|x<30="No"|0<1="Yes"
