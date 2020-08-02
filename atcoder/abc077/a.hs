@@ -1,0 +1,1 @@
+main=interact$f.init;f s|reverse s==s="YES"|0<1="NO"

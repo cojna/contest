@@ -1,0 +1,1 @@
+main=do n<-readLn;print$last[i*i|i<-[1..9^6],i*i<=n]
