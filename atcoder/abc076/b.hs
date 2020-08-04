@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,k]=iterate((+)<*>min k)1!!n

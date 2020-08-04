@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[r,g]=2*g-r
