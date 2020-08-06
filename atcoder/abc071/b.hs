@@ -1,0 +1,1 @@
+main=interact(\s->max["None"][[c]|c<-['a'..'z'],notElem c s]!!0)

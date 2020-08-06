@@ -1,0 +1,1 @@
+import Data.List;main=interact$show.([]%).sort.map((0-).read).tail.words;[x,y]%_=x*y;p%(x:y:l)|x==y=(x:p)%l|0<1=p%(y:l);_%_=0
