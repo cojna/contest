@@ -1,0 +1,1 @@
+import Data.List;l=length;main=interact$show.l.filter(odd.l).group.sort.tail.words
