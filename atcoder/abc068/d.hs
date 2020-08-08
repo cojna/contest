@@ -1,0 +1,1 @@
+main=do(q,r)<-(`divMod`50)<$>readLn;putStr$"50\n"++unwords[show$q+x|x<-[0..50],x+r/=50]
