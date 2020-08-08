@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[x,a,b]|b<=a="delicious"|b-a>x="dangerous"|0<1="safe"
