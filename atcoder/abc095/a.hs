@@ -1,0 +1,1 @@
+main=interact$show.f;f s=700+sum[100|'o'<-s]

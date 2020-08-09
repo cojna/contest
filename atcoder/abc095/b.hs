@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:x:l)=n+div(x-sum l)(minimum l)

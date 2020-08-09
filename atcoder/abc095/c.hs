@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[a,b,c,x,y]=minimum[a*x+b*y,2*c*max x y,2*c*y+max(x-y)0*a,2*c*x+max(y-x)0*b]
