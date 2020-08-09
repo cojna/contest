@@ -1,0 +1,1 @@
+main=interact$f.last.lines;f s|l<-scanl(+)0$g<$>s,m<-minimum l=('('<$[1..0-m])++s++(')'<$[1..last l-m]);g c|c<')'=1|0<1=0-1

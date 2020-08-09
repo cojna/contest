@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:l)=maximum l-minimum l

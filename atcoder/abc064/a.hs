@@ -1,0 +1,1 @@
+main=interact$f.read.filter(>' ');f x|mod x 4<1="YES"|0<1="NO"
