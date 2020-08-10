@@ -1,0 +1,1 @@
+main=interact$f.words;f[a,b,c]|last a==b!!0,last b==c!!0="YES"|0<1="NO"
