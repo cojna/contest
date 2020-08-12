@@ -1,0 +1,1 @@
+import Data.List;main=interact$concat.transpose.lines
