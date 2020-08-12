@@ -1,0 +1,1 @@
+main=interact(\s->[toEnum$fromEnum(w!!0)-32|w<-words s])

@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[x,y]|abs(x-y)<2="Brown"|0<1="Alice"

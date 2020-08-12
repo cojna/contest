@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[a,b]|a>b="GREATER"|a<b="LESS"|0<a="EQUAL"
