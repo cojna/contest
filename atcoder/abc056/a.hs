@@ -1,0 +1,1 @@
+main=interact f;f(a:_:b:_)|a==b="H"|0<1="D"

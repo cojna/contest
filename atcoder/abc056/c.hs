@@ -1,0 +1,1 @@
+main=do x<-readLn;print$[i|i<-[1..],i*(i+1)>=2*x]!!0

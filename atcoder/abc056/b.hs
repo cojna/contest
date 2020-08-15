@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[w,a,b]=max 0$max a b-min a b-w
