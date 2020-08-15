@@ -1,0 +1,1 @@
+main=getLine>>=print.f;f"RSR"=1;f s=sum[1|'R'<-s]
