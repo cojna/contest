@@ -1,0 +1,1 @@
+main=interact$f.map r.words;f[a,b]|a<b="Bob"|a>b="Alice"|0<1="Draw";r"1"=99;r s=read s
