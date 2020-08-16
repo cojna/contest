@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,m]|2*n<m=n+div(m-2*n)4|0<1=div m 2

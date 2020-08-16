@@ -1,0 +1,1 @@
+main=do x<-readLn;print$800*x-200*div x 15

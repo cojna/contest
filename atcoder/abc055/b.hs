@@ -1,0 +1,1 @@
+main=do n<-readLn;print$foldl(\x y->rem(x*y)$10^9+7)1[1..n]
