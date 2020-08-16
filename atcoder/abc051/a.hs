@@ -1,0 +1,1 @@
+main=interact$map f;f ','=' ';f c=c
