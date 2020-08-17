@@ -1,0 +1,1 @@
+main=interact$(>>=f).tail.lines;f s=unlines[s,s]
