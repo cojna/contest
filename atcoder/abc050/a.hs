@@ -1,0 +1,1 @@
+main=interact$show.f.words;f[x,y,z]=read x+read(['-'|y>"+"]++z)
