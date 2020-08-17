@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(_:k:l)=minimum.zipWith(%)l$drop(k-1)l;x%y|x>0=y|y<0=0-x|0<1=min(-x)y-x+y

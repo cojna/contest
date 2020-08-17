@@ -1,0 +1,1 @@
+import Data.List;main=interact$unlines.f.f.words;f=transpose.filter(any(<'.'))
