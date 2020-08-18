@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,k]=k*(k-1)^(n-1)

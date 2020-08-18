@@ -1,0 +1,1 @@
+main=interact(\s->show$sum[1|x<-[1..100],elem x.map read$words s])
