@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f l|sum l==2*maximum l="Yes"|0<1="No"
