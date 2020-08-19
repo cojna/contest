@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,k,x,y]=x*min n k+y*max(n-k)0
