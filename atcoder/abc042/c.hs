@@ -1,0 +1,1 @@
+main=interact$f.words;f(n:_:l)=[x|x<-show<$>[0+read n..],all(`notElem`concat l)x]!!0

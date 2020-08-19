@@ -1,0 +1,1 @@
+main=interact$f.product.map read.words;f x|x==175="YES"|0<1="NO"
