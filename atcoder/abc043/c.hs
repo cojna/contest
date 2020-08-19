@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:l)=minimum[sum[(x-k)^2|x<-l]|k<-[-999..999]]

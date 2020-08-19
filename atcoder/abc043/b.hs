@@ -1,0 +1,1 @@
+main=interact(""#);l#[_]=reverse l;l#(c:s)=drop(sum[2|c>'A'])(c:l)#s

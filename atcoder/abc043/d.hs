@@ -1,0 +1,1 @@
+main=interact$unwords.map show.f.zip[1..];f l@((i,x):(j,y):(k,z):_)|x==y=[i,j]|x==z=[i,k]|0<1=f$tail l;f l=[-1,-1]
