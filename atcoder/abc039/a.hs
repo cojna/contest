@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[a,b,c]=2*(a*b+b*c+c*a)

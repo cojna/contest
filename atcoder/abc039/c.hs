@@ -1,0 +1,1 @@
+main=interact$f.lines;f[s]=[v|(k,v)<-map(`drop`cycle"WBWBWWBWBWBW")[0,2,4,5,7,9,11]`zip`words"Do Re Mi Fa So La Si",take 20k==s]>>=id

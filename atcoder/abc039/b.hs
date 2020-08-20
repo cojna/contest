@@ -1,0 +1,1 @@
+main=do x<-readLn;print$[n|n<-[1..],n^4==x]!!0
