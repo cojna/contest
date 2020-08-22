@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,x,t]=div(n+x-1)x*t
