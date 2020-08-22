@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[w,h]|3*w==4*h="4:3\n"|0<1="16:9\n"
