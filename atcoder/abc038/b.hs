@@ -1,0 +1,1 @@
+main=interact$f.words;f[x,y,z,w]|or$(==)<$>[x,y]<*>[z,w]="YES"|0<1="NO"
