@@ -1,0 +1,1 @@
+import Data.List;main=interact$unlines.map reverse.transpose.tail.lines
