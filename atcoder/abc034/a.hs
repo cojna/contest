@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[x,y]|x<y="Better\n"|0<x="Worse\n"
