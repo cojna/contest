@@ -70,27 +70,27 @@ main = do
 solve :: Int -> Int -> (Int, Int) -> (Int, Int) -> U.Vector Char -> Maybe Int
 solve h w (sx,sy) (gx,gy) mat = runST $ do
     dist <- UM.replicate (h*w) maxBound
-    heap <- newMinBinaryHeap 400400
+    deque <- newDeque (2 * 1024 * 1024)
     UM.write dist start 0
-    insertBH (0, start) heap
-    fix $ \loop -> deleteFindTopBH heap >>= \case
-        Just (dv,xy) -> do
+    pushBack (0, start) deque
+    fix $ \loop -> popFront deque >>= \case
+        Just (dv, xy) -> do
           dv' <- UM.unsafeRead dist xy
           when (dv == dv') $ do
             let (x, y) = quotRem xy w
-            neighbor4 x y $ \nx ny -> when (inGrid h w nx ny && U.unsafeIndex mat (ix nx ny) == '.') $ do
+            neighbor4 h w x y $ \nx ny -> when (U.unsafeIndex mat (ix nx ny) == '.') $ do
                 dnxny <- UM.unsafeRead dist (ix nx ny)
                 when (dv < dnxny) $ do
                     UM.unsafeWrite dist (ix nx ny) dv
-                    insertBH (dv, ix nx ny) heap
-            flip MS.mapM_ (stream (x-2) (x+3)) $ \nx -> do
-                flip MS.mapM_ (stream (y-2) (y+3)) $ \ny -> do
+                    pushFront (dv, ix nx ny) deque
+            flip MS.mapM_ (stream (max 0 $ x-2) (min h $ x+3)) $ \nx -> do
+                flip MS.mapM_ (stream (max 0 $ y-2) (min w $ y+3)) $ \ny -> do
                     let nxny = ix nx ny
-                    when (inGrid h w nx ny && U.unsafeIndex mat nxny == '.' ) $ do
+                    when (U.unsafeIndex mat nxny == '.' ) $ do
                         dnxny <- UM.unsafeRead dist nxny
                         when (dv + 1 < dnxny) $ do
                             UM.unsafeWrite dist nxny (dv + 1)
-                            insertBH (dv+1, nxny) heap
+                            pushBack (dv + 1, nxny) deque
           loop
         Nothing -> return ()
     dg <- UM.read dist goal
@@ -103,14 +103,109 @@ solve h w (sx,sy) (gx,gy) mat = runST $ do
     start = ix sx sy
     goal = ix gx gy
 
-
 inGrid :: Int -> Int -> Int -> Int -> Bool
 inGrid h w x y = 0 <= x && x < h && 0 <= y && y < w
 {-# INLINE inGrid #-}
 
-neighbor4 :: (Applicative f) => Int -> Int -> (Int -> Int -> f ()) -> f ()
-neighbor4 x y f = f (x - 1) y *> f x (y - 1) *> f x (y + 1) *> f (x + 1) y
+neighbor4 :: (Applicative f) => Int -> Int -> Int -> Int -> (Int -> Int -> f ()) -> f ()
+neighbor4 h w x y f
+    =  when (x > 0) (f (x - 1) y)
+    *> when (y > 0) (f x (y - 1))
+    *> when (y < w - 1) (f x (y + 1))
+    *> when (x < h - 1) (f (x + 1) y)
 {-# INLINE neighbor4 #-}
+
+data Deque s a = Deque
+    { dequeVars :: !(UM.MVector s Int)
+    , getDeque  :: !(UM.MVector s a)
+    }
+
+_dequeFrontPos :: Int
+_dequeFrontPos = 0
+
+_dequeBackPos :: Int
+_dequeBackPos = 1
+
+newDeque :: (PrimMonad m, UM.Unbox a) => Int -> m (Deque (PrimState m) a)
+newDeque n = Deque <$> UM.replicate 2 n <*> UM.unsafeNew (2 * n)
+
+defaultDequeSize :: Int
+defaultDequeSize = 1024 * 1024
+
+lengthDeque :: (PrimMonad m, UM.Unbox a) => Deque (PrimState m) a -> m Int
+lengthDeque (Deque info _)
+    = (-) <$> UM.unsafeRead info _dequeBackPos
+        <*> UM.unsafeRead info _dequeFrontPos
+{-# INLINE lengthDeque #-}
+
+popFront :: (PrimMonad m, UM.Unbox a) => Deque (PrimState m) a -> m (Maybe a)
+popFront (Deque info v) = do
+    f <- UM.unsafeRead info _dequeFrontPos
+    b <- UM.unsafeRead info _dequeBackPos
+    if f < b
+    then do
+        UM.unsafeWrite info _dequeFrontPos (f + 1)
+        pure <$> UM.unsafeRead v f
+    else return Nothing
+{-# INLINE popFront #-}
+
+popBack :: (PrimMonad m, UM.Unbox a) => Deque(PrimState m) a -> m (Maybe a)
+popBack (Deque info v) = do
+    f <- UM.unsafeRead info _dequeFrontPos
+    b <- UM.unsafeRead info _dequeBackPos
+    if f < b
+    then do
+        UM.unsafeWrite info _dequeBackPos (b - 1)
+        pure <$> UM.unsafeRead v b
+    else return Nothing
+{-# INLINE popBack #-}
+
+pushFront :: (PrimMonad m, UM.Unbox a) => a -> Deque(PrimState m) a -> m ()
+pushFront x (Deque info v) = do
+    f <- UM.unsafeRead info _dequeFrontPos
+    UM.unsafeWrite v (f - 1) x
+    UM.unsafeWrite info _dequeFrontPos (f - 1)
+{-# INLINE pushFront #-}
+
+pushBack :: (PrimMonad m, UM.Unbox a) => a -> Deque(PrimState m) a -> m ()
+pushBack x (Deque info v) = do
+    b <- UM.unsafeRead info _dequeBackPos
+    UM.unsafeWrite v b x
+    UM.unsafeWrite info _dequeBackPos (b + 1)
+{-# INLINE pushBack #-}
+
+pushFronts :: (PrimMonad m, UM.Unbox a)
+    => U.Vector a -> Deque (PrimState m) a -> m ()
+pushFronts vec (Deque info v) = do
+    let n = U.length vec
+    f <- UM.unsafeRead info _dequeFrontPos
+    UM.unsafeWrite info _dequeFrontPos (f - n)
+    U.unsafeCopy (UM.unsafeSlice (f - n) n v) vec
+{-# INLINE pushFronts #-}
+
+pushBacks :: (PrimMonad m, UM.Unbox a)
+    => U.Vector a -> Deque (PrimState m) a -> m ()
+pushBacks vec (Deque info v) = do
+    let n = U.length vec
+    b <- UM.unsafeRead info _dequeBackPos
+    UM.unsafeWrite info _dequeBackPos (b + n)
+    U.unsafeCopy (UM.unsafeSlice b n v) vec
+{-# INLINE pushBacks #-}
+
+clearDeque :: (UM.Unbox a, PrimMonad m) => Deque (PrimState m) a -> m ()
+clearDeque (Deque info v) = do
+    let o = UM.length v `quot` 2
+    UM.unsafeWrite info _dequeFrontPos o
+    UM.unsafeWrite info _dequeBackPos o
+
+freezeDeque
+    :: (PrimMonad m, UM.Unbox a)
+    => Deque (PrimState m) a -> m (U.Vector a)
+freezeDeque (Deque info v) = do
+    f <- UM.unsafeRead info _dequeFrontPos
+    b <- UM.unsafeRead info _dequeBackPos
+    U.freeze $ UM.unsafeSlice f (b - f) v
+
 
 -------------------------------------------------------------------------------
 -- Utils
@@ -168,94 +263,3 @@ lowerBound low high p = runIdentity (lowerBoundM low high (return . p))
 upperBound :: Int -> Int -> (Int -> Bool) -> Int
 upperBound low high p = runIdentity (upperBoundM low high (return . p))
 {-# INLINE upperBound #-}
--------------------------------------------------------------------------------
--- Data.VecQueue
--------------------------------------------------------------------------------
-data VecQueue s a = VecQueue{intVarsVQ :: !(UM.MVector s Int), internalVecQueue :: !(UM.MVector s a)}
-_dequeueCount :: Int
-_dequeueCount = 0
-{-# INLINE _dequeueCount #-}
-_enqueueCount :: Int
-_enqueueCount = 1
-{-# INLINE _enqueueCount #-}
-newVecQueue :: (PrimMonad m, UM.Unbox a) => Int -> m (VecQueue (PrimState m) a)
-newVecQueue n = VecQueue <$> UM.replicate 2 0 <*> UM.unsafeNew n
-defaultVecQueueSize :: Int
-defaultVecQueueSize = 1024 * 1024
-lengthVQ :: (PrimMonad m, UM.Unbox a) => VecQueue (PrimState m) a -> m Int
-lengthVQ (VecQueue info _) = (-) <$> UM.unsafeRead info _enqueueCount <*> UM.unsafeRead info _dequeueCount
-{-# INLINE lengthVQ #-}
-dequeueVQ :: (PrimMonad m, UM.Unbox a) => VecQueue (PrimState m) a -> m (Maybe a)
-dequeueVQ (VecQueue info q) = do { f <- UM.unsafeRead info _dequeueCount; r <- UM.unsafeRead info _enqueueCount; if f < r then do { UM.unsafeWrite info _dequeueCount (f + 1); pure <$> UM.unsafeRead q f} else return Nothing}
-{-# INLINE dequeueVQ #-}
-enqueueVQ :: (PrimMonad m, UM.Unbox a) => a -> VecQueue (PrimState m) a -> m ()
-enqueueVQ x (VecQueue info q) = do { r <- UM.unsafeRead info _enqueueCount; UM.unsafeWrite q r x; UM.unsafeWrite info _enqueueCount (r + 1)}
-{-# INLINE enqueueVQ #-}
-enqueuesVQ :: (PrimMonad m, UM.Unbox a) => U.Vector a -> VecQueue (PrimState m) a -> m ()
-enqueuesVQ vec (VecQueue info q) = do { r <- UM.unsafeRead info _enqueueCount; UM.unsafeWrite info _enqueueCount (r + U.length vec); U.unsafeCopy (UM.unsafeSlice r (U.length vec) q) vec}
-{-# INLINE enqueuesVQ #-}
-clearVQ :: (UM.Unbox a, PrimMonad m) => VecQueue (PrimState m) a -> m ()
-clearVQ (VecQueue info _) = do { UM.unsafeWrite info _dequeueCount 0; UM.unsafeWrite info _enqueueCount 0}
-freezeVecQueue :: (PrimMonad m, UM.Unbox a) => VecQueue (PrimState m) a -> m (U.Vector a)
-freezeVecQueue (VecQueue info q) = do { f <- UM.unsafeRead info _dequeueCount; r <- UM.unsafeRead info _enqueueCount; U.unsafeFreeze $ UM.unsafeSlice f (r - f) q}
--------------------------------------------------------------------------------
--- Data.Heap.Binary
--------------------------------------------------------------------------------
-data BinaryHeap (f :: * -> *) s a = BinaryHeap{priorityBH :: a -> f a, intVarsBH :: !(UM.MVector s Int), internalVecBH :: !(UM.MVector s a)}
-_sizeBH :: Int
-_sizeBH = 0
-{-# INLINE _sizeBH #-}
-type MinBinaryHeap s a = BinaryHeap Identity s a
-type MaxBinaryHeap s a = BinaryHeap Down s a
-newBinaryHeap :: (U.Unbox a, PrimMonad m) => (a -> f a) -> Int -> m (BinaryHeap f (PrimState m) a)
-newBinaryHeap prio n = BinaryHeap prio <$> UM.replicate 1 0 <*> UM.unsafeNew n
-newMinBinaryHeap :: (U.Unbox a, PrimMonad m) => Int -> m (MinBinaryHeap (PrimState m) a)
-newMinBinaryHeap = newBinaryHeap Identity
-newMaxBinaryHeap :: (U.Unbox a, PrimMonad m) => Int -> m (MaxBinaryHeap (PrimState m) a)
-newMaxBinaryHeap = newBinaryHeap Down
-getBinaryHeapSize :: (PrimMonad m) => BinaryHeap f (PrimState m) a -> m Int
-getBinaryHeapSize BinaryHeap{..} = UM.unsafeRead intVarsBH _sizeBH
-{-# INLINE getBinaryHeapSize #-}
-siftUpBy :: (U.Unbox a, PrimMonad m) => (a -> a -> Ordering) -> Int -> UM.MVector (PrimState m) a -> m ()
-siftUpBy cmp k vec = do { x <- UM.unsafeRead vec k; flip fix k $ \ loop !i -> if i > 0 then do { let { parent = (i - 1) `unsafeShiftR` 1}; p <- UM.unsafeRead vec parent; case cmp p x of { GT -> UM.unsafeWrite vec i p >> loop parent; _ -> UM.unsafeWrite vec i x}} else UM.unsafeWrite vec 0 x}
-{-# INLINE siftUpBy #-}
-siftDownBy :: (U.Unbox a, PrimMonad m) => (a -> a -> Ordering) -> Int -> UM.MVector (PrimState m) a -> m ()
-siftDownBy cmp k vec = do { x <- UM.unsafeRead vec k; let { !n = UM.length vec}; flip fix k $ \ loop !i -> do { let { l = unsafeShiftL i 1 .|. 1}; let { r = l + 1}; if n <= l then UM.unsafeWrite vec i x else do { vl <- UM.unsafeRead vec l; if r < n then do { vr <- UM.unsafeRead vec r; case cmp vr vl of { LT -> case cmp x vr of { GT -> UM.unsafeWrite vec i vr >> loop r; _ -> UM.unsafeWrite vec i x}; _ -> case cmp x vl of { GT -> UM.unsafeWrite vec i vl >> loop l; _ -> UM.unsafeWrite vec i x}}} else case cmp x vl of { GT -> UM.unsafeWrite vec i vl >> loop l; _ -> UM.unsafeWrite vec i x}}}}
-{-# INLINE siftDownBy #-}
-heapifyBy :: (U.Unbox a, PrimMonad m) => (a -> a -> Ordering) -> UM.MVector (PrimState m) a -> m ()
-heapifyBy cmp vec = do { rev (UM.length vec `quot` 2) $ \ i -> do { siftDownBy cmp i vec}}
-{-# INLINE heapifyBy #-}
-class OrdVia f a where { compareVia :: (a -> f a) -> a -> a -> Ordering}
-instance (Ord a) => OrdVia Identity a where { compareVia _ = coerce (compare :: Identity a -> Identity a -> Ordering); {-# INLINE compareVia #-}}
-instance (Ord a) => OrdVia Down a where { compareVia _ = coerce (compare :: Down a -> Down a -> Ordering); {-# INLINE compareVia #-}}
-buildBinaryHeapVia :: (OrdVia f a, U.Unbox a, PrimMonad m) => (a -> f a) -> U.Vector a -> m (BinaryHeap f (PrimState m) a)
-buildBinaryHeapVia ~priorityBH vec = do { intVarsBH <- UM.replicate 1 $ U.length vec; internalVecBH <- U.thaw vec; heapifyBy (compareVia priorityBH) internalVecBH; return $! BinaryHeap{..}}
-{-# INLINE buildBinaryHeapVia #-}
-buildMinBinaryHeap :: (Ord a, U.Unbox a, PrimMonad m) => U.Vector a -> m (BinaryHeap Identity (PrimState m) a)
-buildMinBinaryHeap = buildBinaryHeapVia Identity
-{-# INLINE buildMinBinaryHeap #-}
-buildMaxBinaryHeap :: (Ord a, U.Unbox a, PrimMonad m) => U.Vector a -> m (BinaryHeap Down (PrimState m) a)
-buildMaxBinaryHeap = buildBinaryHeapVia Down
-{-# INLINE buildMaxBinaryHeap #-}
-unsafeViewBH :: (U.Unbox a, PrimMonad m) => BinaryHeap f (PrimState m) a -> m a
-unsafeViewBH BinaryHeap{..} = UM.unsafeRead internalVecBH 0
-{-# INLINE unsafeViewBH #-}
-viewBH :: (U.Unbox a, PrimMonad m) => BinaryHeap f (PrimState m) a -> m (Maybe a)
-viewBH bh = do { size <- getBinaryHeapSize bh; if size > 0 then Just <$!> unsafeViewBH bh else return $! Nothing}
-{-# INLINE viewBH #-}
-insertBH :: (OrdVia f a, U.Unbox a, PrimMonad m) => a -> BinaryHeap f (PrimState m) a -> m ()
-insertBH x BinaryHeap{..} = do { size <- UM.unsafeRead intVarsBH _sizeBH; UM.unsafeWrite intVarsBH _sizeBH (size + 1); UM.unsafeWrite internalVecBH size x; siftUpBy (compareVia priorityBH) size internalVecBH}
-{-# INLINE insertBH #-}
-unsafeDeleteBH :: (OrdVia f a, U.Unbox a, PrimMonad m) => BinaryHeap f (PrimState m) a -> m ()
-unsafeDeleteBH BinaryHeap{..} = do { size' <- subtract 1 <$!> UM.unsafeRead intVarsBH _sizeBH; UM.unsafeWrite intVarsBH _sizeBH size'; UM.unsafeSwap internalVecBH 0 size'; siftDownBy (compareVia priorityBH) 0 (UM.unsafeTake size' internalVecBH)}
-{-# INLINE unsafeDeleteBH #-}
-modifyTopBH :: (OrdVia f a, U.Unbox a, PrimMonad m) => (a -> a) -> BinaryHeap f (PrimState m) a -> m ()
-modifyTopBH f BinaryHeap{..} = do { UM.unsafeModify internalVecBH f 0; size <- UM.unsafeRead intVarsBH _sizeBH; siftDownBy (compareVia priorityBH) 0 (UM.unsafeTake size internalVecBH)}
-{-# INLINE modifyTopBH #-}
-deleteFindTopBH :: (Ord a, U.Unbox a, PrimMonad m) => MinBinaryHeap (PrimState m) a -> m (Maybe a)
-deleteFindTopBH bh = do { size <- getBinaryHeapSize bh; if size > 0 then do { !top <- unsafeViewBH bh <* unsafeDeleteBH bh; return $ Just top} else return Nothing}
-{-# INLINE deleteFindTopBH #-}
-clearBH :: (PrimMonad m) => BinaryHeap f (PrimState m) a -> m ()
-clearBH BinaryHeap{..} = UM.unsafeWrite intVarsBH 0 0
-freezeInternalVecBH :: (U.Unbox a, PrimMonad m) => BinaryHeap f (PrimState m) a -> m (U.Vector a)
-freezeInternalVecBH BinaryHeap{..} = do { size <- UM.unsafeRead intVarsBH _sizeBH; U.unsafeFreeze (UM.unsafeTake size internalVecBH)}

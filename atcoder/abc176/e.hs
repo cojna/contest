@@ -68,24 +68,41 @@ main = do
 lim = 300300
 
 solve :: Int -> Int -> Int -> U.Vector (Int, Int) -> Int
-solve h w m ps
-    | U.length maxIndicesX * U.length maxIndicesY > m = maxX + maxY
-    | or [encode x y `IS.notMember` set|x<-U.toList maxIndicesX, y<-U.toList maxIndicesY] = maxX + maxY
+solve h w m (U.unzip -> (xs, ys))
+    | U.any (\x -> U.any (\y -> notMember $ encode x y) maxIndicesY) maxIndicesX = maxX + maxY
     | otherwise = maxX + maxY - 1
   where
-    !set = U.foldl' (flip IS.insert) IS.empty
-        $ U.map (uncurry encode) ps
+    !encoded = radixSort64 $ U.zipWith encode xs ys
+    notMember xy =
+        let !i = lowerBound 0 m ((xy<=).U.unsafeIndex encoded)
+        in i == m || U.unsafeIndex encoded i /= xy
     !maxX = U.maximum freqX
-    !maxIndicesX = U.map fst . U.filter ((==maxX).snd) $ U.indexed freqX
-    freqX = U.accumulate (+) (U.replicate lim 0)
-        $ U.map ((,1).fst) ps
+    !maxIndicesX = U.elemIndices maxX freqX
+    !freqX = U.accumulate (+) (U.replicate lim 0)　$ U.map (,1) xs
     !maxY = U.maximum freqY
-    !maxIndicesY = U.map fst . U.filter ((==maxY).snd) $ U.indexed freqY
-    freqY = U.accumulate (+) (U.replicate lim 0)
-        $ U.map ((,1).snd) ps
+    !maxIndicesY = U.elemIndices maxY freqY
+    !freqY = U.accumulate (+) (U.replicate lim 0)　$ U.map (,1) ys
 
 encode :: Int -> Int -> Int
 encode x y = unsafeShiftL x 32 .|. y
+
+radixSort64 :: U.Vector Int -> U.Vector Int
+radixSort64 v = F.foldl' step v [0, 16, 32, 48]
+  where
+    mask k x = unsafeShiftRL x k .&. 0xffff
+    step v k = U.create $ do
+        offset <- U.unsafeThaw
+            . U.prescanl' (+) 0
+            . U.unsafeAccumulate (+) (U.replicate 0x10000 0)
+            $ U.map (flip (,) 1 . mask k) v
+        res <- UM.unsafeNew $ U.length v
+        U.forM_ v $ \x -> do
+            let !masked = mask k x
+            i <- UM.unsafeRead offset masked
+            UM.unsafeWrite offset masked $ i + 1
+            UM.unsafeWrite res i x
+        return res
+{-# INLINE radixSort64 #-}
 
 -------------------------------------------------------------------------------
 -- Utils
