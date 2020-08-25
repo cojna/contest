@@ -1,0 +1,1 @@
+main=getContents>>=print.f.map read.words;f[a,d]=a*d+max a d

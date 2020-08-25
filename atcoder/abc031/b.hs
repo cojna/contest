@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f(l:h:_:t)=unlines[show$max(l-x)0-sum[1|h<x]|x<-t]
