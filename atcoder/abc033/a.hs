@@ -1,0 +1,1 @@
+main=readLn>>=putStrLn.f;f x|mod x 1111<1="SAME"|0<1="DIFFERENT"
