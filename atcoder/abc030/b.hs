@@ -1,0 +1,1 @@
+main=getLine>>=print.f.map read.words;f[n,m]|x<-abs$5.5*m-n*30+sum[360|n>11]=min(360-x)x

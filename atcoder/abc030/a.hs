@@ -1,0 +1,1 @@
+main=getLine>>=putStrLn.f.map read.words;f[a,b,c,d]=words"TAKAHASHI DRAW AOKI"!!(1+signum(a*d-b*c))
