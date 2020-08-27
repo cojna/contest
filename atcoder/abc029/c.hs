@@ -1,0 +1,1 @@
+main=do n<-readLn;mapM putStrLn$mapM(\_->"abc")[1..n]

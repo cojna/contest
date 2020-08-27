@@ -1,0 +1,1 @@
+main=do s<-getContents;print$sum[1|s<-lines s,elem 'r's]
