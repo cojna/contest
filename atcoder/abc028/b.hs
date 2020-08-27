@@ -1,0 +1,1 @@
+main=getLine>>=putStrLn.f;f s=unwords[show$sum[1|c<-s,c==k]|k<-['A'..'F']]

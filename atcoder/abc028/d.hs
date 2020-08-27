@@ -1,0 +1,1 @@
+main=getLine>>=print.f.map read.words;f[n,k]=(6*(k-1)*(n-k)+3*n-2)/n^3

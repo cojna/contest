@@ -1,0 +1,1 @@
+main=readLn>>=putStrLn.f;f x|x>99="Perfect"|x>89="Great"|x>59="Good"|0<1="Bad"
