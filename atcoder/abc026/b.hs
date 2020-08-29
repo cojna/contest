@@ -1,0 +1,1 @@
+main=getContents>>=print.f.map read.words;f(_:l)=pi*sum[r*r*product[-1|x<-l,x>r]|r<-l]
