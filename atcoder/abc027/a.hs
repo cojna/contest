@@ -1,0 +1,1 @@
+main=getLine>>=print.f.map read.words;f[x,y,z]|x==y=z|y==z=x|0<x=y
