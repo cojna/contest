@@ -1,0 +1,1 @@
+main=getContents>>=print.f.map read.words;f[a,b,c,k,s,t]=max 0$a*s+b*t-sum[c*(s+t)|s+t>=k]
