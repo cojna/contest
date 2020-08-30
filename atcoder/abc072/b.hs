@@ -1,0 +1,1 @@
+main=interact f;f(x:_:s)=x:f s;f s=s

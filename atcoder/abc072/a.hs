@@ -1,0 +1,1 @@
+main=interact$show.max 0.foldl1(-).map read.words
