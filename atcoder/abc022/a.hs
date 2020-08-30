@@ -1,0 +1,1 @@
+main=getContents>>=print.f.map read.words;f(n:s:t:l)=sum[1|x<-scanl1(+)l,s<=x,x<=t]

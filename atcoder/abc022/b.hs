@@ -1,0 +1,1 @@
+import Data.List;main=getContents>>=print.f.map read.words;f(n:l)=n-length(group$sort l)
