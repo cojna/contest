@@ -1,0 +1,1 @@
+main=do(c:s)<-getLine;putStr$c:shows(length s-1)[last s]
