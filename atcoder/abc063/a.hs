@@ -1,0 +1,1 @@
+main=interact$f.sum.map read.words;f s|s<10=show s|0<1="error"

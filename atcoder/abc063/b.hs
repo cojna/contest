@@ -1,0 +1,1 @@
+main=interact f;f s|[x|x<-s,y<-s,x==y]==s="yes"|0<1="no"
