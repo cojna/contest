@@ -1,0 +1,1 @@
+main=interact$show.f.lines;f[_,s]=maximum$scanl(\x c->x+1-sum[2|c<'I'])0s
