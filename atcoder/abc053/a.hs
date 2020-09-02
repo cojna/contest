@@ -1,0 +1,1 @@
+main=readLn>>=putStr.f;f x|x<1200="ABC"|0<1="ARC"

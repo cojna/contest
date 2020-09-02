@@ -1,0 +1,1 @@
+main=do x<-readLn;print$2*div x 11+div(mod x 11+5)6

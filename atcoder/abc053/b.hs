@@ -1,0 +1,1 @@
+main=interact$show.length.f 'A'.f 'Z';f c=dropWhile(/=c).reverse
