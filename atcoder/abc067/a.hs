@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[a,b]=last("Imp":["P"|3<-gcd 3<$>[a,b,a+b]])++"ossible"

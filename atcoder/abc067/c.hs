@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(_:x:l)=minimum.map abs$zipWith(-)(scanl(+)x l)$scanr1(+)l
