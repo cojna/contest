@@ -1,0 +1,1 @@
+main=do s<-getLine;print$last$init[2*i|i<-[1..length s],take i s==take i(drop i s)]
