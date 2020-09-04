@@ -1,0 +1,1 @@
+main=interact$show.(`div`2).foldr((+).read)1.words
