@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[a,b,c,d]=words"Right Balanced Left"!!(1+signum(a+b-c-d))

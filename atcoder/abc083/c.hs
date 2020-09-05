@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[x,y]=last[i+1|i<-[0..63],x*2^i<=y]

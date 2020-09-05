@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[n,a,b]=sum[x|x<-[1..n],sum[read[c]|c<-show x]`elem`[a..b]]
