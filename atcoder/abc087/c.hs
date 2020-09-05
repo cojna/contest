@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:l)|(x,y)<-splitAt n l=maximum$zipWith(+)(scanl1(+)x)$scanr1(+)y
