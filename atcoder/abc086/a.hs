@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[a,b]|odd$a*b="Odd"|0<1="Even"

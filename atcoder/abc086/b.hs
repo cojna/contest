@@ -1,0 +1,1 @@
+main=interact$f.words;f[a,b]|elem(a++b)[show$x*x|x<-[0..999]]="Yes"|0<1="No"
