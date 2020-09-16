@@ -1,0 +1,1 @@
+main=getLine>>=print.f.map read.words;f[n,m]=[x|x<-[1..],x/=m]!!0
