@@ -1,0 +1,1 @@
+main=readLn>>=putStr.unwords.map show.(iterate f[1,0]!!).(+1);f[x,y]=[x+y,x]
