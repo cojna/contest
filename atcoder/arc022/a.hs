@@ -1,0 +1,1 @@
+main=getLine>>=putStrLn.f;f x|_:y<-'I'#x,_:z<-'C'#y,_:_<-'T'#z="YES"|0<1="NO";c#s=snd$span(\x->x/=c&&x/=[c..]!!32)s
