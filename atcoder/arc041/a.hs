@@ -1,0 +1,1 @@
+main=getContents>>=print.f.map read.words;f[x,y,k]|y>k=x+k|0<1=x+y+y-k
