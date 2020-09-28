@@ -1,0 +1,1 @@
+main=do k<-readLn;putStr$concat["ACL"|_<-[1..k]]
