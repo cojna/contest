@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[a,b,c]|a+b<c,4*a*b<(c-a-b)^2="Yes"|0<1="No"
