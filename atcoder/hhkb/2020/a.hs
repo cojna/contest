@@ -1,0 +1,1 @@
+main=interact(\(s:_:t:_)->[[t,pred t..]!!sum[32|s>'N']])
