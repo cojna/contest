@@ -1,0 +1,1 @@
+main=interact$f.words;f[x,_,y,_]|x<y="1"|0<1="0"

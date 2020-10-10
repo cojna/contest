@@ -1,0 +1,1 @@
+main=interact(\s->last$":(":[show y|y<-[1..9^5],div(y*108)100==read s])
