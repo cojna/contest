@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[a,b,c]|all odd[a,b,c]=minimum[a*b,b*c,c*a]|0<1=0
