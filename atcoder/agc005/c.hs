@@ -62,18 +62,22 @@ import           Unsafe.Coerce
 
 main :: IO ()
 main = do
-    bs <- C.getLine
-    let n = C.length bs
-    let cs = U.unfoldrN n (runParser char) bs
-    print $ solve n cs
+    n <- readLn @Int
+    xs <- U.unfoldrN n (runParser int) <$> C.getLine
+    putStrLn.bool"Impossible""Possible"$ solve n xs
 
-solve :: Int -> U.Vector Char -> Int
-solve n cs = fst $ U.foldl' step (n, 0) cs
+solve :: Int -> U.Vector Int -> Bool
+solve n xs = and
+    [ div (mm + 1) 2 == m
+    , freq U.! m == 1 && even mm
+        || freq U.! m == 2 && odd mm
+    , U.all (>=2) (U.slice (m + 1) (mm - m) freq)
+    ]
   where
-    step (!res, !cntS) c = case c of
-        'S' -> (res, cntS + 1)
-        'T' | cntS > 0 -> (res - 2, cntS - 1)
-            | otherwise -> (res, cntS)
+    !m = U.minimum xs
+    !mm = U.maximum xs
+    freq :: U.Vector Int
+    !freq = U.accumulate (+) (U.replicate n 0) $ U.map (,1) xs
 
 
 -------------------------------------------------------------------------------
