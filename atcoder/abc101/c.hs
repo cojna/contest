@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:k:_)=div(n+k-3)$k-1
