@@ -1,0 +1,1 @@
+main=do x<-readLn;putStr$cycle["White","Black"]!!x
