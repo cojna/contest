@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f(n:l)=snd$maximum[(sum[1|x<-l,rem x k<1],k)|k<-[2..1000]]

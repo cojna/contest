@@ -1,0 +1,1 @@
+main=interact$show.f.map read.words;f[a,b]=max 0$2*a+100-b
