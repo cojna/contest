@@ -1,0 +1,1 @@
+main=readLn>>=print.max 0
