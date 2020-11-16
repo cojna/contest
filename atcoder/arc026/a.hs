@@ -1,0 +1,1 @@
+main=getLine>>=print.f.map read.words;f[n,a,b]=max(n-5)0*a+min 5n*b
