@@ -1,0 +1,1 @@
+main=interact$show.foldl1 div.map read.words
