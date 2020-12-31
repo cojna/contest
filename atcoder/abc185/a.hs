@@ -1,0 +1,1 @@
+main=interact$show.foldr(min.read)999.words
