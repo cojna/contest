@@ -1,0 +1,1 @@
+main=interact$show.foldr(max.foldr((+).read.pure)0)0.words
