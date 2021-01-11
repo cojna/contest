@@ -1,0 +1,1 @@
+main=interact$f.map read.words;f[x,y]|min x y+3>max x y="Yes"|0<1="No"
