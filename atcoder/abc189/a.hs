@@ -1,0 +1,1 @@
+main=interact f;f(x:y:z:_)|x==y,y==z="Won"|0<1="Lost"
