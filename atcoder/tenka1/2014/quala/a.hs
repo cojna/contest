@@ -1,0 +1,1 @@
+import Data.List;main=mapM print$sortOn show[1..1000]
