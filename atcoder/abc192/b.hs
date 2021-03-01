@@ -1,0 +1,1 @@
+main=getLine>>=putStr.f;f s|or$zipWith($)p s="No"|0<1="Yes";p=(<'a'):('Z'<):p
